@@ -24,3 +24,7 @@ function operate(operator,a,b) {
     }
 }
 // need to have "" around the operator (or a string) : operate("+",3,4)
+
+//function that populate the display
+
+//the * and / must be prior (from left to right)

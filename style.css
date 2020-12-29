@@ -12,10 +12,11 @@
 }
 #calcDisplay {
     display: flex;
-    justify-content: flex-end;
+    flex-direction: column;
+    width: 320px;
     background-color: grey;
 }
-#displayText {
+#displayText, #precText {
     text-align: right;
 }
 

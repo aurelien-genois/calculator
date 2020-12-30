@@ -23,7 +23,6 @@ function operate(operator,a,b) {
             return divide(a,b);
     }
 }
-// need to have "" around the operator (or a string) : operate("+",3,4)
 
 function displayNumber(e) {
     // if prec input was =, clear displayText
@@ -37,55 +36,109 @@ function displayNumber(e) {
     precInput = e.target.attributes.getNamedItem('data-number').value;
 }
 
-function addFunction(e) {
-    const number = Number(digitsInput.join(''));
-    digitsInput = [];
-        // if prec input was =, do not push number
-    if(precInput !== '=') {
+function calcResult(e) {
+        const number = Number(digitsInput.join(''));
+        digitsInput = [];
         numbers.push(number);
-    }
-    const operator = e.target.attributes.getNamedItem('data-function').value;
-    operators.push(operator);
-    if (operator === "=") {
-        for (let i = 0; i < operators.length - 1;i++) {          
-            // ! the * and / must be prior (from left to right)
+        Result = numbers[0];
+        // loop for the * and / which must be prior
+        for (let i = 0; i < operators.length;i++) {
+            if ((operators[i] === "*") || (operators[i] === "/")) {
+                Result = operate(operators[i], numbers[i], numbers[i+1]);
+                numbers.splice(i,2,Result);
+                operators.splice(i,1);
+            }
+        }
+        // loop for other + and - operators
+        for (let i = 0; i < operators.length;i++) {          
             //first and second number are always 0 and 1
-            stepResult = operate(operators[i],numbers[0], numbers[1]);
-            // the two first number must be removed
-            numbers.shift();
-            numbers.shift();
-            // operate became the first number
-            numbers.unshift(stepResult);
+            Result = operate(operators[i],numbers[0], numbers[1]);
+            numbers.splice(0,2,Result);
         }
         precText.textContent = displayText.textContent;
-        displayText.textContent = stepResult;
+        displayText.textContent = Result;
         operators = [];
-    } else if (operator === "clear") {
-        numbers = [];
-        operators = [];
-        displayText.textContent = '';
-        precText.textContent = '';
-    } else {
-        displayText.textContent += ' ' + operator + ' ';
-    }
+        precInput = e.target.attributes.getNamedItem('data-function').value;
+}
+
+function clear(e) {
+    numbers = [];
+    operators = [];
+    displayText.textContent = '';
+    precText.textContent = '';
     precInput = e.target.attributes.getNamedItem('data-function').value;
 }
 
+function back(e) {
+    switch(precInput) {
+        case "/":
+        case "*":
+        case "-":
+        case "+":
+            operators.pop();
+            displayText.textContent = displayText.textContent.split('').slice(0,-3).join('');
+            precInput = 'backOperand';
+            return;
+        case "0":
+        case "1":
+        case "2":
+        case "3":
+        case "4":
+        case "5":
+        case "6":
+        case "7":
+        case "8":
+        case "9":
+            digitsInput.pop();
+            displayText.textContent = displayText.textContent.split('').slice(0,-1).join('');
+            precInput = e.target.attributes.getNamedItem('data-function').value;
+            return;
+    }
+    
+}
+
+function addOperator(e) {
+    const number = Number(digitsInput.join(''));
+    digitsInput = [];
+    const operator = e.target.attributes.getNamedItem('data-function').value;
+    // pervent two successive operators, before push any number or operator
+    switch(precInput) {
+        case "/":
+        case "*":
+        case "-":
+        case "+":
+            console.log("Two operators in a row");
+            return;
+    }
+    if((precInput !== '=') && (precInput !== 'backOperand')) {
+        numbers.push(number);
+    }
+    operators.push(operator);
+    displayText.textContent += ' ' + operator + ' ';
+    precInput = operator;
+}
+
 const digitsButtons = document.querySelectorAll('.numberInput');
-const functionButtons = document.querySelectorAll('.functionInput');
+
+const operatorsButtons = document.querySelectorAll('.operator');
+const calcButton = document.querySelector('.functionInput[data-function="="]');
+const clearButton = document.querySelector('.functionInput[data-function="clear"]');
+const backButton = document.querySelector('.functionInput[data-function="back"]');
+
 const displayText = document.querySelector('#displayText');
 const precText = document.querySelector('#precText');
 let digitsInput = [];
 let numbers = [];
 let operators = [];
-let stepResult = 0;
+let Result = 0;
 let precInput = '';
 
 digitsButtons.forEach(input => input.addEventListener('click', displayNumber));
 
-functionButtons.forEach(input => input.addEventListener('click', addFunction));
-
-// ! add a back button (remove last digit)
+operatorsButtons.forEach(input => input.addEventListener('click', addOperator));
+calcButton.addEventListener('click', calcResult);
+clearButton.addEventListener('click', clear);
+backButton.addEventListener('click', back);
 
 /* 
 logic

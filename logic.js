@@ -20,8 +20,8 @@ function operate(operator,a,b) {
         case "*":
             return multiply(a,b);
         case "/":
-            // prevent NaN if O/O
-            if(a == 0 && b == 0) {
+            // prevent NaN if O/O or -x/0
+            if(a<=0 && b == 0) {
                 return 0;
             }
             return divide(a,b);
@@ -38,6 +38,7 @@ function addDigit(e) {
     if(digit == '.') {
         // if there is already a dot, do not add it to the digits
         if(currentDigits.indexOf(".") != -1) {
+            console.log("Already a dot in the current number");
             return;
         }
     }
@@ -158,6 +159,8 @@ function changeSign(e) {
         case "-":
         case "+":
         case "+/-":
+        case "clear":
+        case "init":
             // unshift - sign to currentDigits if currentDigits[0] is not [-] 
             if (currentDigits[0] != '-') {
                 currentDigits.push('-');
@@ -209,5 +212,87 @@ clearButton.addEventListener('click', clear);
 backButton.addEventListener('click', back);
 signButton.addEventListener('click', changeSign);
 
-
+// link keyboard to buttons (adapted from other students solution)
+window.onkeydown = function(e){
+    let x = e.key;
+    let choice
+    switch(x){
+        case '1':
+            choice = document.querySelector('#one');
+            choice.click();
+            break;
+        case '2':
+            choice = document.querySelector('#two');
+            choice.click();
+            break;
+        case '3':
+            choice = document.querySelector('#three');
+            choice.click();
+            break;
+        case'4':
+            choice = document.querySelector('#four');
+            choice.click();
+            break;
+        case '5':
+            choice = document.querySelector('#five');
+            choice.click();
+            break;
+        case '6':
+            choice = document.querySelector('#six');
+            choice.click();
+            break;
+        case '7':
+            choice = document.querySelector('#seven');
+            choice.click();
+            break;
+        case '8':
+            choice = document.querySelector('#eight');
+            choice.click();
+            break;
+        case '9':
+            choice = document.querySelector('#nine');
+            choice.click();
+            break;
+        case '0':
+            choice = document.querySelector('#zero');
+            choice.click();
+            break;
+        case 'Escape':
+            choice = document.querySelector('#clear');
+            choice.click();
+            break;
+        case 'Backspace':
+            choice = document.querySelector('#backspace');
+            choice.click();
+            break;
+        case '/':
+            choice = document.querySelector('#divide');
+            choice.click();
+            break;
+        case '*':
+            choice = document.querySelector('#multiply');
+            choice.click();
+            break;
+        case '-':
+            choice = document.querySelector('#subtract');
+            choice.click();
+            break;
+        case '+':
+            choice = document.querySelector('#add');
+            choice.click();
+            break;
+        case '.':
+            choice = document.querySelector('#decimal');
+            choice.click();
+            break;
+        case 'Enter':
+            choice = document.querySelector('#enter');
+            choice.click();
+            break;
+        case 'Shift':
+            choice = document.querySelector('#plus-minus');
+            choice.click();
+            break;
+    }
+}
 

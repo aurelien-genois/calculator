@@ -212,7 +212,7 @@ clearButton.addEventListener('click', clear);
 backButton.addEventListener('click', back);
 signButton.addEventListener('click', changeSign);
 
-// link keyboard to buttons (adapted from other students solution)
+// link keyboard keys to buttons (adapted from other students solution)
 window.onkeydown = function(e){
     let x = e.key;
     let choice

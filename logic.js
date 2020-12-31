@@ -35,12 +35,15 @@ function addDigit(e) {
         numbers = [];
     }   
     const digit = e.target.attributes.getNamedItem('data-number').value; // get the digit
+    if(digit == '.') {
+        // if there is already a dot, do not add it to the digits
+        if(currentDigits.indexOf(".") != -1) {
+            return;
+        }
+    }
     displayText.textContent += digit; // display the digit
     currentDigits.push(digit); // store the digit
     precInput = digit; // update prec input
-    // if there is already a dot, disable the dot button
-    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
-
 }
 
 function addOperator(e) {
@@ -70,9 +73,6 @@ function addOperator(e) {
     operators.push(operator); // store the operator
     displayText.textContent += ' ' + operator + ' '; // display the operator
     precInput = operator; // update prec input
-    // if there is already a dot, disable the dot button
-    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
-
 }
 
 function calcResult(e) {
@@ -109,8 +109,6 @@ function calcResult(e) {
         displayText.textContent = +result.toFixed(13); // round and display the result
         operators = []; // clear the operators
         precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
-        // if there is already a dot, disable the dot button
-        (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
 }
 
 function clear(e) {
@@ -151,9 +149,6 @@ function back(e) {
             displayText.textContent = displayText.textContent.split('').slice(0,-1).join(''); // remove the last digit from the display
             break;
     }    
-    // if there is already a dot, disable the dot button, or re-enable if dot is removed
-    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
-    //precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
 function changeSign(e) {

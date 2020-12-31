@@ -20,6 +20,10 @@ function operate(operator,a,b) {
         case "*":
             return multiply(a,b);
         case "/":
+            // prevent NaN if O/O
+            if(a == 0 && b == 0) {
+                return 0;
+            }
             return divide(a,b);
     }
 }
@@ -94,12 +98,11 @@ function calcResult(e) {
             numbers.splice(0,2,result); // replace the two operands with the result of their operation
         }
         precText.textContent = displayText.textContent; // copy the display text to the precedent text
-        displayText.textContent = result; // display the result
+        displayText.textContent = +result.toFixed(13); // display the result
         operators = []; // clear the operators
         precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
         // if there is already a dot, disable the dot button
         (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
-
 }
 
 function clear(e) {

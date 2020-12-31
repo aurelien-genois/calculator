@@ -24,55 +24,81 @@ function operate(operator,a,b) {
     }
 }
 
-function displayNumber(e) {
+function addDigit(e) {
     // if prec input was =, clear displayText
     if(precInput === '=') {
         displayText.textContent = '';
         numbers = [];
+    }   
+    const digit = e.target.attributes.getNamedItem('data-number').value; // get the digit
+    displayText.textContent += digit; // display the digit
+    currentDigits.push(digit); // store the digit
+    precInput = digit; // update prec input
+}
+
+function addOperator(e) {
+    // if prec input is a operator for pervent two successive operators
+    switch(precInput) {
+        case "/":
+        case "*":
+        case "-":
+        case "+":
+            console.log("Two operators in a row");
+            return;
+        case "init":
+        case "clear":
+            console.log("no digit before");
+            return;
     }
-    const digit = e.target.attributes.getNamedItem('data-number').value;
-    displayText.textContent += digit;
-    digitsInput.push(digit);
-    precInput = e.target.attributes.getNamedItem('data-number').value;
+    const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
+    currentDigits = []; // clear the current digits
+    const operator = e.target.attributes.getNamedItem('data-function').value; // get the operator
+    if((precInput !== '=')) {
+        numbers.push(number); // store the number (operand) if the prec input is not =, because the last numbers element is still the precedent result alone
+    }
+    operators.push(operator); // store the operator
+    displayText.textContent += ' ' + operator + ' '; // display the operator
+    precInput = operator; // update prec input
 }
 
 function calcResult(e) {
-        const number = Number(digitsInput.join(''));
-        digitsInput = [];
-        numbers.push(number);
-        Result = numbers[0];
-        // loop for the * and / which must be prior
+        const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
+        currentDigits = []; // clear the current digits
+        numbers.push(number); // store the number (operand) 
+        // loop for the operators * and / which must be prior
         for (let i = 0; i < operators.length;i++) {
             if ((operators[i] === "*") || (operators[i] === "/")) {
-                Result = operate(operators[i], numbers[i], numbers[i+1]);
-                if (Result === Infinity) {
-                    Result = 0;
+                result = operate(operators[i], numbers[i], numbers[i+1]); // first and second number are i and i+1 (from left to right)
+                // if divide by 0 (Infinity), result is 0
+                if (result === Infinity) {
+                    result = 0;
                 }
-                numbers.splice(i,2,Result);
+                numbers.splice(i,2,result); // replace the two operands with the result of their operation
                 operators.splice(i,1);
             }
         }
         // loop for other + and - operators
         for (let i = 0; i < operators.length;i++) {          
-            //first and second number are always 0 and 1
-            Result = operate(operators[i],numbers[0], numbers[1]);
-            if (Result === Infinity) {
-                Result = 0;
+            result = operate(operators[i],numbers[0], numbers[1]); // first and second number are 0 and 1 (from left to right)
+            // if divide by 0 (Infinity), result is 0
+            if (result === Infinity) {
+                result = 0;
             }
-            numbers.splice(0,2,Result);
+            numbers.splice(0,2,result); // replace the two operands with the result of their operation
         }
-        precText.textContent = displayText.textContent;
-        displayText.textContent = Result;
-        operators = [];
-        precInput = e.target.attributes.getNamedItem('data-function').value;
+        precText.textContent = displayText.textContent; // copy the display text to the precedent text
+        displayText.textContent = result; // display the result
+        operators = []; // clear the operators
+        precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
 function clear(e) {
-    numbers = [];
-    operators = [];
-    displayText.textContent = '';
-    precText.textContent = '';
-    precInput = e.target.attributes.getNamedItem('data-function').value;
+    numbers = []; // clear the numbers
+    operators = []; // clear the operators
+    currentDigits = []; // clear the currentDigits
+    displayText.textContent = ''; // clear the display
+    precText.textContent = ''; // clear the precedent text
+    precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
 function back(e) {
@@ -81,10 +107,11 @@ function back(e) {
         case "*":
         case "-":
         case "+":
-            operators.pop();
-            displayText.textContent = displayText.textContent.split('').slice(0,-3).join('');
-            precInput = 'backOperand';
-            return;
+            operators.pop(); // remove the last operator from operators
+            displayText.textContent = displayText.textContent.split('').slice(0,-3).join(''); // remove the last operator from the display
+            currentDigits.push(numbers.slice(-1)[0]); // move back the last number to the currentDigits
+            numbers.pop(); // remove the last number
+            break;
         case "0":
         case "1":
         case "2":
@@ -95,77 +122,32 @@ function back(e) {
         case "7":
         case "8":
         case "9":
-            digitsInput.pop();
-            displayText.textContent = displayText.textContent.split('').slice(0,-1).join('');
-            precInput = e.target.attributes.getNamedItem('data-function').value;
-            return;
+            currentDigits.pop(); // remove the last digit from currentDigits
+            displayText.textContent = displayText.textContent.split('').slice(0,-1).join(''); // remove the last digit from the display
+            break;
     }
-    
+    precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
-function addOperator(e) {
-    const number = Number(digitsInput.join(''));
-    digitsInput = [];
-    const operator = e.target.attributes.getNamedItem('data-function').value;
-    // pervent two successive operators, before push any number or operator
-    switch(precInput) {
-        case "/":
-        case "*":
-        case "-":
-        case "+":
-            console.log("Two operators in a row");
-            return;
-    }
-    if((precInput !== '=') && (precInput !== 'backOperand')) {
-        numbers.push(number);
-    }
-    operators.push(operator);
-    displayText.textContent += ' ' + operator + ' ';
-    precInput = operator;
-}
-
+// get the inputs
 const digitsButtons = document.querySelectorAll('.numberInput');
-
 const operatorsButtons = document.querySelectorAll('.operator');
 const calcButton = document.querySelector('.functionInput[data-function="="]');
 const clearButton = document.querySelector('.functionInput[data-function="clear"]');
 const backButton = document.querySelector('.functionInput[data-function="back"]');
-
+// get the texts display
 const displayText = document.querySelector('#displayText');
 const precText = document.querySelector('#precText');
-let digitsInput = [];
+// init the arrays and variables
+let currentDigits = [];
 let numbers = [];
 let operators = [];
-let Result = 0;
-let precInput = '';
+let result = 0;
+let precInput = 'init';
 
-digitsButtons.forEach(input => input.addEventListener('click', displayNumber));
-
+// add event listeners for each inputs
+digitsButtons.forEach(input => input.addEventListener('click', addDigit));
 operatorsButtons.forEach(input => input.addEventListener('click', addOperator));
 calcButton.addEventListener('click', calcResult);
 clearButton.addEventListener('click', clear);
 backButton.addEventListener('click', back);
-
-/* 
-logic
-click several digit
-display the digits
-store the digits in a array
-when click a operator (data-function)
-    join the digits to create a number
-    clean the digits array
-    store the number into an array
-    get the operator
-    store the operator into an array
-    if the operator is =
-        operate for each operator (until finish)
-        copy the displayText
-        add the displayText in the precText
-        clear the displayText
-        display the result in the displayText
-    else
-    display the operator
-click several digit...
-
-
-*/

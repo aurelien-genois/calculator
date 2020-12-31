@@ -34,6 +34,9 @@ function addDigit(e) {
     displayText.textContent += digit; // display the digit
     currentDigits.push(digit); // store the digit
     precInput = digit; // update prec input
+    // if there is already a dot, disable the dot button
+    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
+
 }
 
 function addOperator(e) {
@@ -59,6 +62,9 @@ function addOperator(e) {
     operators.push(operator); // store the operator
     displayText.textContent += ' ' + operator + ' '; // display the operator
     precInput = operator; // update prec input
+    // if there is already a dot, disable the dot button
+    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
+
 }
 
 function calcResult(e) {
@@ -91,6 +97,9 @@ function calcResult(e) {
         displayText.textContent = result; // display the result
         operators = []; // clear the operators
         precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
+        // if there is already a dot, disable the dot button
+        (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
+
 }
 
 function clear(e) {
@@ -123,11 +132,14 @@ function back(e) {
         case "7":
         case "8":
         case "9":
+        case ".":
             currentDigits.pop(); // remove the last digit from currentDigits
             displayText.textContent = displayText.textContent.split('').slice(0,-1).join(''); // remove the last digit from the display
             break;
-    }
-    precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
+    }    
+    // if there is already a dot, disable the dot button, or re-enable if dot is removed
+    (currentDigits.indexOf(".") != -1) ? dotButton.disabled = true : dotButton.disabled = false;
+    //precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
 // get the inputs
@@ -136,6 +148,7 @@ const operatorsButtons = document.querySelectorAll('.operator');
 const calcButton = document.querySelector('.functionInput[data-function="="]');
 const clearButton = document.querySelector('.functionInput[data-function="clear"]');
 const backButton = document.querySelector('.functionInput[data-function="back"]');
+const dotButton = document.querySelector('.numberInput[data-number="."]');
 // get the texts display
 const displayText = document.querySelector('#displayText');
 const precText = document.querySelector('#precText');
@@ -145,6 +158,7 @@ let numbers = [];
 let operators = [];
 let result = 0;
 let precInput = 'init';
+
 
 // add event listeners for each inputs
 digitsButtons.forEach(input => input.addEventListener('click', addDigit));

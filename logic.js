@@ -65,6 +65,7 @@ function calcResult(e) {
         const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
         currentDigits = []; // clear the current digits
         numbers.push(number); // store the number (operand) 
+        result = numbers[0]; // set the result to the last numbers (useful if their is no operator but new digits)
         // loop for the operators * and / which must be prior
         for (let i = 0; i < operators.length;i++) {
             if ((operators[i] === "*") || (operators[i] === "/")) {

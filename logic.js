@@ -57,6 +57,10 @@ function addOperator(e) {
             console.log("no digit before");
             return;
     }
+    // if there is only a -, add a 0 for avoid a NaN
+    if (currentDigits.length == 1 && currentDigits[0] == '-') {
+        currentDigits.push(0);
+    }
     const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
     currentDigits = []; // clear the current digits
     const operator = e.target.attributes.getNamedItem('data-function').value; // get the operator
@@ -72,6 +76,10 @@ function addOperator(e) {
 }
 
 function calcResult(e) {
+        // if there is only a -, add a 0 for avoid a NaN
+        if (currentDigits.length == 1 && currentDigits[0] == '-') {
+            currentDigits.push(0);
+        }
         const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
         currentDigits = []; // clear the current digits
         numbers.push(number); // store the number (operand) 
@@ -125,6 +133,7 @@ function back(e) {
             displayText.textContent = displayText.textContent.split('').slice(0,-3).join(''); // remove the last operator from the display
             currentDigits.push(numbers.slice(-1)[0]); // move back the last number to the currentDigits
             numbers.pop(); // remove the last number
+            precInput = 'back';
             break;
         case "0":
         case "1":
@@ -162,7 +171,7 @@ function changeSign(e) {
                 currentDigits.pop(); // remove the sign
                 displayText.textContent = displayText.textContent.split('').slice(0,-1).join('');
             }
-            precInput = "+/-";
+            precInput = "+/-"; // update prec input
             return;
     }
     // if no currentDigits add - sign to the result and numbers[0] if not already and update displayText
@@ -174,17 +183,10 @@ function changeSign(e) {
         // unshift - sign to currentDigits if currentDigits[0] is not [-] 
         (currentDigits[0] != '-') ? currentDigits.unshift('-') : currentDigits.shift();
         let currentDigitsLength = (currentDigits[0] != '-') ? currentDigits.length+1 : currentDigits.length-1;
-
         displayText.textContent = displayText.textContent.split('').slice(0,-currentDigitsLength).join(''); // remove the last digits from displayText
         displayText.textContent += currentDigits.join('');
-        // numbers.pop(); 
-        // numbers.push(result);
-        // console.log(numbers);
     }
 }
-
-// update displayText (join currentDigits and +=)
-
 
 // get the inputs
 const digitsButtons = document.querySelectorAll('.numberInput');
@@ -203,7 +205,6 @@ let numbers = [];
 let operators = [];
 let result = 0;
 let precInput = 'init';
-
 
 // add event listeners for each inputs
 digitsButtons.forEach(input => input.addEventListener('click', addDigit));

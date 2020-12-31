@@ -98,7 +98,7 @@ function calcResult(e) {
             numbers.splice(0,2,result); // replace the two operands with the result of their operation
         }
         precText.textContent = displayText.textContent; // copy the display text to the precedent text
-        displayText.textContent = +result.toFixed(13); // display the result
+        displayText.textContent = +result.toFixed(13); // round and display the result
         operators = []; // clear the operators
         precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
         // if there is already a dot, disable the dot button
@@ -109,6 +109,7 @@ function clear(e) {
     numbers = []; // clear the numbers
     operators = []; // clear the operators
     currentDigits = []; // clear the currentDigits
+    result = 0;
     displayText.textContent = ''; // clear the display
     precText.textContent = ''; // clear the precedent text
     precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
@@ -136,6 +137,7 @@ function back(e) {
         case "8":
         case "9":
         case ".":
+        case "+/-":
             currentDigits.pop(); // remove the last digit from currentDigits
             displayText.textContent = displayText.textContent.split('').slice(0,-1).join(''); // remove the last digit from the display
             break;
@@ -145,12 +147,52 @@ function back(e) {
     //precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
 }
 
+function changeSign(e) {
+    switch(precInput) {
+        case "/":
+        case "*":
+        case "-":
+        case "+":
+        case "+/-":
+            // unshift - sign to currentDigits if currentDigits[0] is not [-] 
+            if (currentDigits[0] != '-') {
+                currentDigits.push('-');
+                displayText.textContent += '-'; // display the sign
+            } else {
+                currentDigits.pop(); // remove the sign
+                displayText.textContent = displayText.textContent.split('').slice(0,-1).join('');
+            }
+            precInput = "+/-";
+            return;
+    }
+    // if no currentDigits add - sign to the result and numbers[0] if not already and update displayText
+    if(currentDigits.length == 0) {
+        result = (result > 0) ? -result : Math.abs(result);
+        numbers[0] = result;
+        displayText.textContent = result;
+    } else {
+        // unshift - sign to currentDigits if currentDigits[0] is not [-] 
+        (currentDigits[0] != '-') ? currentDigits.unshift('-') : currentDigits.shift();
+        let currentDigitsLength = (currentDigits[0] != '-') ? currentDigits.length+1 : currentDigits.length-1;
+
+        displayText.textContent = displayText.textContent.split('').slice(0,-currentDigitsLength).join(''); // remove the last digits from displayText
+        displayText.textContent += currentDigits.join('');
+        // numbers.pop(); 
+        // numbers.push(result);
+        // console.log(numbers);
+    }
+}
+
+// update displayText (join currentDigits and +=)
+
+
 // get the inputs
 const digitsButtons = document.querySelectorAll('.numberInput');
 const operatorsButtons = document.querySelectorAll('.operator');
 const calcButton = document.querySelector('.functionInput[data-function="="]');
 const clearButton = document.querySelector('.functionInput[data-function="clear"]');
 const backButton = document.querySelector('.functionInput[data-function="back"]');
+const signButton = document.querySelector('.functionInput[data-function="+/-"]');
 const dotButton = document.querySelector('.numberInput[data-number="."]');
 // get the texts display
 const displayText = document.querySelector('#displayText');
@@ -169,3 +211,7 @@ operatorsButtons.forEach(input => input.addEventListener('click', addOperator));
 calcButton.addEventListener('click', calcResult);
 clearButton.addEventListener('click', clear);
 backButton.addEventListener('click', back);
+signButton.addEventListener('click', changeSign);
+
+
+

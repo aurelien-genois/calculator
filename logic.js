@@ -45,6 +45,9 @@ function calcResult(e) {
         for (let i = 0; i < operators.length;i++) {
             if ((operators[i] === "*") || (operators[i] === "/")) {
                 Result = operate(operators[i], numbers[i], numbers[i+1]);
+                if (Result === Infinity) {
+                    Result = 0;
+                }
                 numbers.splice(i,2,Result);
                 operators.splice(i,1);
             }
@@ -53,6 +56,9 @@ function calcResult(e) {
         for (let i = 0; i < operators.length;i++) {          
             //first and second number are always 0 and 1
             Result = operate(operators[i],numbers[0], numbers[1]);
+            if (Result === Infinity) {
+                Result = 0;
+            }
             numbers.splice(0,2,Result);
         }
         precText.textContent = displayText.textContent;

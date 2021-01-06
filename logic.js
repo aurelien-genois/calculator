@@ -28,13 +28,13 @@ function operate(operator,a,b) {
     }
 }
 
-function addDigit(e) {
+function addDigit() {
     // if prec input was =, clear displayText
     if(precInput === '=') {
         displayText.textContent = '';
         numbers = [];
     }   
-    const digit = e.target.attributes.getNamedItem('data-number').value; // get the digit
+    const digit = this.dataset.number; // get the digit
     if(digit == '.') {
         // if there is already a dot, do not add it to the digits
         if(currentDigits.indexOf(".") != -1) {
@@ -47,7 +47,7 @@ function addDigit(e) {
     precInput = digit; // update prec input
 }
 
-function addOperator(e) {
+function addOperator() {
     // if prec input is a operator for pervent two successive operators
     switch(precInput) {
         case "/":
@@ -67,7 +67,7 @@ function addOperator(e) {
     }
     const number = Number(currentDigits.join('')); // join the current digits as a number (operand)
     currentDigits = []; // clear the current digits
-    const operator = e.target.attributes.getNamedItem('data-function').value; // get the operator
+    const operator = this.dataset.function; // get the operator
     if((precInput !== '=')) {
         numbers.push(number); // store the number (operand) if the prec input is not =, because the last numbers element is still the precedent result alone
     }
@@ -76,7 +76,7 @@ function addOperator(e) {
     precInput = operator; // update prec input
 }
 
-function calcResult(e) {
+function calcResult() {
         // if there is only a -, add a 0 for avoid a NaN
         if (currentDigits.length == 1 && currentDigits[0] == '-') {
             currentDigits.push(0);
@@ -109,17 +109,17 @@ function calcResult(e) {
         precText.textContent = displayText.textContent; // copy the display text to the precedent text
         displayText.textContent = +result.toFixed(13); // round and display the result
         operators = []; // clear the operators
-        precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
+        precInput = this.dataset.function; // update prec input
 }
 
-function clear(e) {
+function clear() {
     numbers = []; // clear the numbers
     operators = []; // clear the operators
     currentDigits = []; // clear the currentDigits
     result = 0;
     displayText.textContent = ''; // clear the display
     precText.textContent = ''; // clear the precedent text
-    precInput = e.target.attributes.getNamedItem('data-function').value; // update prec input
+    precInput = this.dataset.function; // update prec input
 }
 
 function back(e) {

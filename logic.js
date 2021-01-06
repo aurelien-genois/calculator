@@ -122,7 +122,7 @@ function clear() {
     precInput = this.dataset.function; // update prec input
 }
 
-function back(e) {
+function back() {
     switch(precInput) {
         case "/":
         case "*":
@@ -152,7 +152,7 @@ function back(e) {
     }    
 }
 
-function changeSign(e) {
+function changeSign() {
     switch(precInput) {
         case "/":
         case "*":

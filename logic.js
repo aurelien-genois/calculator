@@ -35,14 +35,20 @@ function addDigit() {
         numbers = [];
     }   
     const digit = this.dataset.number; // get the digit
+    let zeroBeforeDot = "";
     if(digit == '.') {
+        // if no currentDigits, add a 0 before the .
+        if(currentDigits.length == 0) {
+            currentDigits.unshift(0);
+            zeroBeforeDot = 0; // 0 before . for display if no currentDigits
+        }
         // if there is already a dot, do not add it to the digits
         if(currentDigits.indexOf(".") != -1) {
             console.log("Already a dot in the current number");
             return;
         }
     }
-    displayText.textContent += digit; // display the digit
+    displayText.textContent +=  zeroBeforeDot + digit; // display the digit
     currentDigits.push(digit); // store the digit
     precInput = digit; // update prec input
 }
@@ -86,7 +92,7 @@ function calcResult() {
         numbers.push(number); // store the number (operand) 
         result = numbers[0]; // set the result to the last numbers (useful if their is no operator but new digits)
         // loop for the operators * and / which must be prior
-        for (let i = 0; i < operators.length;i++) {
+        for (let i = 0; i < operators.length; i++) {
             if ((operators[i] === "*") || (operators[i] === "/")) {
                 result = operate(operators[i], numbers[i], numbers[i+1]); // first and second number are i and i+1 (from left to right)
                 // if divide by 0 (Infinity), result is 0
@@ -100,10 +106,6 @@ function calcResult() {
         // loop for other + and - operators
         for (let i = 0; i < operators.length;i++) {          
             result = operate(operators[i],numbers[0], numbers[1]); // first and second number are 0 and 1 (from left to right)
-            // if divide by 0 (Infinity), result is 0
-            if (result === Infinity) {
-                result = 0;
-            }
             numbers.splice(0,2,result); // replace the two operands with the result of their operation
         }
         precText.textContent = displayText.textContent; // copy the display text to the precedent text
@@ -132,7 +134,7 @@ function back() {
             displayText.textContent = displayText.textContent.split('').slice(0,-3).join(''); // remove the last operator from the display
             currentDigits.push(numbers.slice(-1)[0]); // move back the last number to the currentDigits
             numbers.pop(); // remove the last number
-            precInput = 'back';
+            precInput = 'back'; // to prevent "two operators in a row" error if add again a new operator
             break;
         case "0":
         case "1":
@@ -161,13 +163,13 @@ function changeSign() {
         case "+/-":
         case "clear":
         case "init":
-            // unshift - sign to currentDigits if currentDigits[0] is not [-] 
+            // push - sign to currentDigits no [-] already
             if (currentDigits[0] != '-') {
                 currentDigits.push('-');
                 displayText.textContent += '-'; // display the sign
             } else {
-                currentDigits.pop(); // remove the sign
-                displayText.textContent = displayText.textContent.split('').slice(0,-1).join('');
+                currentDigits.pop(); // remove the sign if [-] already
+                displayText.textContent = displayText.textContent.split('').slice(0,-1).join(''); // display the sign from the display
             }
             precInput = "+/-"; // update prec input
             return;
@@ -274,7 +276,7 @@ window.onkeydown = function(e){
             choice.click();
             break;
         case '-':
-            choice = document.querySelector('#subtract');
+            choice = document.querySelector('#substract');
             choice.click();
             break;
         case '+':

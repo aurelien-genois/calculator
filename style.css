@@ -1,81 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+
 body {
-    background-color: rgb(6, 7, 19);
+  background-color: rgb(6, 7, 19);
 }
 #title {
-    text-align: center;
-    color: rgb(204, 192, 173);
+  text-align: center;
+  color: rgb(204, 192, 173);
 }
 #calcGrid {
-    margin: 0 auto;
-    width: 320px;
-    background-color: rgb(58, 78, 107);
-    border-radius: 4%;
-    padding: 15px;
+  margin: 0 auto;
+  width: 320px;
+  background-color: rgb(58, 78, 107);
+  border-radius: 3%;
+  padding: 15px;
+  border: outset rgb(69, 91, 126) 4px;
 }
 
 #calcDisplay {
-    width: 320px;
-    background-color: rgb(105, 105, 105);
+  width: 320px;
+  background-color: rgb(105, 105, 105);
+  font-family: 'JetBrains Mono', monospace;
+  border: inset rgb(119, 119, 119) 3px;
+  box-sizing: border-box;
 }
 #precText {
-    text-align: right;
-    font-size: 14px;
-    margin: 0;
-    height: 20px;
-    padding-top: 5px;
-    padding-right: 5px;
+  text-align: right;
+  font-size: 14px;
+  margin: 0;
+  height: 20px;
+  padding-top: 5px;
+  padding-right: 5px;
 }
 #displayText {
-    text-align: right;
-    font-size: 20px;
-    margin: 0;
-    height: 25px;
-    padding-top: 5px;
-    padding-right: 5px;
+  text-align: right;
+  font-size: 20px;
+  margin: 0;
+  height: 25px;
+  padding-top: 5px;
+  padding-right: 5px;
 }
 
 #calcInputs {
-    display: flex;
-    margin-top: 20px;
+  display: flex;
+  margin-top: 20px;
 }
 .input {
-    height: 80px;
-    width: 80px;
-    padding: 0;
-    font-size: 20px;
+  height: 80px;
+  width: 80px;
+  padding: 0;
+  font-size: 20px;
+  border-radius: 5px;
+  border-width: 3px;
+  border-style: outset;
+  box-sizing: border-box;
 }
 #numbers {
-    display: grid;
-    grid-template-columns: repeat(3,1fr);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 }
 .numberInput {
-    background-color: rgb(151, 209, 211);
-    border-color: rgb(151, 209, 211);
+  background-color: rgb(151, 209, 211);
+  border-color: rgb(189, 226, 226);
 }
-.numberInput[data-number="0"] {
-    grid-column: 1 / span 2;
-    width: 160px;
+.numberInput:hover {
+  background-color: rgb(172, 229, 231);
+  border-color: rgb(210, 243, 243);
+}
+.numberInput:active,
+.numberInput.active {
+  background-color: rgb(115, 175, 177);
+  border-color: rgb(153, 194, 194);
+}
+.numberInput[data-number='0'] {
+  grid-column: 1 / span 2;
+  width: 160px;
 }
 #functions {
-    display: grid;
-    grid-template-columns: 1fr;
+  display: grid;
+  grid-template-columns: 1fr;
 }
 .functionInput {
-    background-color: rgb(211, 207, 151);
-    border-color: rgb(211, 207, 151);
+  background-color: rgb(211, 207, 151);
+  border-color: rgb(233, 230, 185);
 }
-.functionInput[data-function="="] {
-    background-color: rgb(151, 211, 166);
-    border-color: rgb(151, 211, 166);
+.functionInput {
+  background-color: rgb(211, 207, 151);
+  border-color: rgb(233, 230, 185);
+}
+.functionInput:hover {
+  background-color: rgb(230, 226, 174);
+  border-color: rgb(250, 247, 210);
+}
+.functionInput:active,
+.functionInput.active {
+  background-color: rgb(165, 161, 106);
+  border-color: rgb(185, 182, 137);
+}
+.functionInput[data-function='='] {
+  background-color: rgb(151, 211, 166);
+  border-color: rgb(186, 229, 197);
+}
+.functionInput[data-function='=']:hover {
+  background-color: rgb(168, 224, 182);
+  border-color: rgb(207, 247, 217);
+}
+.functionInput[data-function='=']:active,
+.functionInput[data-function='='].active {
+  background-color: rgb(104, 161, 118);
+  border-color: rgb(138, 180, 148);
 }
 .operator {
-    background-color: rgb(179, 151, 211);
-    border-color: rgb(179, 151, 211);
-
+  background-color: rgb(179, 151, 211);
+  border-color: rgb(199, 178, 223);
+}
+.operator:hover {
+  background-color: rgb(200, 173, 230);
+  border-color: rgb(222, 202, 245);
+}
+.operator:active,
+.operator.active {
+  background-color: rgb(128, 104, 156);
+  border-color: rgb(143, 124, 165);
 }
 .input:disabled {
-    background-color: rgb(126, 126, 126);
-    border-color:  rgb(92, 92, 92);
-    color: black;
+  background-color: rgb(126, 126, 126);
+  border-color: rgb(92, 92, 92);
+  color: black;
 }
-

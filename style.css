@@ -3,13 +3,31 @@
 :focus {
   outline: transparent none 0px;
 }
+* {
+  margin: 0;
+  padding: 0;
+}
 
 body {
-  background-color: rgb(6, 7, 19);
+  /* backdrop-filter: blur(2px); */
+  font-family: 'JetBrains Mono', monospace;
+}
+#background {
+  filter: blur(1.5px);
+  z-index: -1;
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-image: url(https://s.wsj.net/public/resources/images/B3-AU337_crypto_M_20180613211757.jpg);
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center;
 }
 #title {
   text-align: center;
   color: rgb(204, 192, 173);
+  padding-top: 15px;
+  margin-bottom: 15px;
 }
 #calcGrid {
   margin: 0 auto;
@@ -23,7 +41,6 @@ body {
 #calcDisplay {
   width: auto;
   background-color: rgb(105, 105, 105);
-  font-family: 'JetBrains Mono', monospace;
   border: inset rgb(119, 119, 119) 3px;
   box-sizing: border-box;
 }
@@ -49,6 +66,7 @@ body {
   margin-top: 20px;
 }
 .input {
+  font-family: inherit;
   height: 80px;
   width: 80px;
   padding: 0;
@@ -143,23 +161,21 @@ body {
   #precText {
     font-size: 4.8vw;
     height: 5.5vw;
-    background-color: red;
   }
   #displayText {
     font-size: 5.5vw;
     height: 6vw;
-    background-color: green;
   }
   #calcInputs {
     margin-top: 10px;
   }
   .input {
-    width: 21vw;
-    height: 21vw;
+    width: 22.5vw;
+    height: 22.5vw;
     font-size: 6vw;
     border-width: 1vw;
   }
   .numberInput[data-number='0'] {
-    width: 42vw;
+    width: 45vw;
   }
 }

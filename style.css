@@ -9,6 +9,7 @@
 }
 
 body {
+  background-color: rgb(6, 7, 19);
   /* backdrop-filter: blur(2px); */
   font-family: 'JetBrains Mono', monospace;
 }

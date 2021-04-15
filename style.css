@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500&display=swap');
+/* prevent the default focus outline on chrome */
+:focus {
+  outline: transparent none 0px;
+}
 
 body {
   background-color: rgb(6, 7, 19);
@@ -17,7 +21,7 @@ body {
 }
 
 #calcDisplay {
-  width: 320px;
+  width: auto;
   background-color: rgb(105, 105, 105);
   font-family: 'JetBrains Mono', monospace;
   border: inset rgb(119, 119, 119) 3px;
@@ -126,4 +130,36 @@ body {
   background-color: rgb(126, 126, 126);
   border-color: rgb(92, 92, 92);
   color: black;
+}
+
+@media screen and (max-width: 350px) {
+  #title {
+    font-size: 8vw;
+  }
+  #calcGrid {
+    width: 90%;
+    padding: 2.25vw;
+  }
+  #precText {
+    font-size: 4.8vw;
+    height: 5.5vw;
+    background-color: red;
+  }
+  #displayText {
+    font-size: 5.5vw;
+    height: 6vw;
+    background-color: green;
+  }
+  #calcInputs {
+    margin-top: 10px;
+  }
+  .input {
+    width: 21vw;
+    height: 21vw;
+    font-size: 6vw;
+    border-width: 1vw;
+  }
+  .numberInput[data-number='0'] {
+    width: 42vw;
+  }
 }

@@ -6,7 +6,7 @@ The [fourth Odin project](https://www.theodinproject.com/paths/foundations/cours
 
 ## Features
 <p align="center">
-<img src="screenshot.gif" alt="screenshot" width="80%"/></p>
+<img src="screenshot.gif" alt="screenshot" width="40%"/></p>
 
 - Can add/substract/divide/multiply several numbers in a row
 - Can change the current number sign

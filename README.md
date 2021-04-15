@@ -20,4 +20,6 @@ The [fourth Odin project](https://www.theodinproject.com/paths/foundations/cours
 ## Challenges
 Resolving problem thinking (in particular with pseudo code) was one goal of this project.
 
-The real challenge was combining conditionnals, loops, and number/strings/arrays manipulations to manage operations and to display numbers and operators. For example, thinking how to manage priority operations for multiplications and divisions, before additions and substractions, with loops and conditionnals was very intructing for manipulating arrays.
+The real challenge was combining conditionnals, loops, and number/strings/arrays manipulations to manage operations and to display numbers and operators. 
+
+For example, thinking how to manage priority operations for multiplications and divisions, before additions and substractions, with loops and conditionnals was very instructing for manipulating arrays.

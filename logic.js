@@ -155,9 +155,10 @@ function back() {
         .split('')
         .slice(0, -3)
         .join(''); // remove the last operator from the display
-      currentDigits.push(numbers.slice(-1)[0]); // move back the last number to the currentDigits
+      const lastNumber = numbers.slice(-1)[0];
+      currentDigits = currentDigits.concat(String(lastNumber).split('')); // move back the last number to the currentDigits
       numbers.pop(); // remove the last number
-      precInput = 'back'; // to prevent "two operators in a row" error if add again a new operator
+      precInput = currentDigits[currentDigits.length - 1]; // to prevent "two operators in a row" error if add again a new operator
       break;
     case '0':
     case '1':
@@ -176,6 +177,11 @@ function back() {
         .split('')
         .slice(0, -1)
         .join(''); // remove the last digit from the display
+      precInput = (currentDigits.length > 0) ? 
+                currentDigits[currentDigits.length - 1] : 
+                (operators.length > 0) ?
+                operators[operators.length - 1] :
+                'init';
       break;
   }
 }
